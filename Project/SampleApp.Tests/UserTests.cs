@@ -1,6 +1,10 @@
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using SampleApp.Domain;
+using SampleApp.Services;
 using Xunit;
 
 namespace SampleApp.Tests;
@@ -53,3 +57,5 @@ public class UserTests(SampleAppFactory factory) : SampleAppTestBase(factory)
         Assert.Contains(getAllResponse, u => u.Email == "newuser@example.com");
     }
 }
+
+
