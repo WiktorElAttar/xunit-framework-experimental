@@ -46,6 +46,9 @@ app.MapGet("/users", async (IUserService userService) =>
 app.MapPost("/users", async (IUserService userService, string name, string email) =>
     await userService.CreateUserAsync(name, email));
 
+app.MapPut("/users/{id}", async (IUserService userService, int id, string name, string email) =>
+    await userService.UpdateUserAsync(id, name, email));
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

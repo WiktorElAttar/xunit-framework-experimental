@@ -7,7 +7,7 @@ using XUnitFramework.Project;
 
 namespace SampleApp.Tests;
 
-public class SampleAppFactory : IntegrationTestFactory<Program>
+public class SampleAppFixture : IntegrationTestFixture<Program>
 {
     // Define your containers here
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()

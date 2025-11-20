@@ -4,5 +4,5 @@ using XUnitFramework.Project;
 namespace SampleApp.Tests;
 
 [Collection("SampleApp Collection")]
-public abstract class SampleAppTestBase(IntegrationTestFactory<Program> factory)
-    : BaseIntegrationTest<Program>(factory);
+public abstract class SampleAppTestBase(SampleAppFixture fixture)
+    : BaseIntegrationTest<Program>(fixture);

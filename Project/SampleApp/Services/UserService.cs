@@ -18,4 +18,18 @@ public class UserService(AppDbContext context) : IUserService
         await context.SaveChangesAsync();
         return user;
     }
+
+    public async Task UpdateUserAsync(int id, string name, string email)
+    {
+        var user = await context.Users.FindAsync(id);
+        if (user is null)
+        {
+            return;
+        }
+
+        user.Name = name;
+        user.Email = email;
+
+        await context.SaveChangesAsync();
+    }
 }

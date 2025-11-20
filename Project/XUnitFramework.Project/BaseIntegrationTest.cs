@@ -8,46 +8,32 @@ namespace XUnitFramework.Project;
 public abstract class BaseIntegrationTest<TProgram> : IAsyncLifetime
     where TProgram : class
 {
-    protected readonly IntegrationTestFactory<TProgram> Factory;
+    private readonly IServiceScope _scope;
 
-    private readonly WebApplicationFactory<TProgram> _testSpecificFactory;
+    protected IntegrationTestFixture<TProgram> Fixture { get; }
+    protected HttpClient Client { get; }
+    protected IServiceProvider Services => _scope.ServiceProvider;
 
-    protected readonly HttpClient Client;
-    protected readonly IServiceScope Scope;
-
-    protected BaseIntegrationTest(IntegrationTestFactory<TProgram> factory)
+    protected BaseIntegrationTest(IntegrationTestFixture<TProgram> fixture)
     {
-        Factory = factory;
+        ArgumentNullException.ThrowIfNull(fixture);
 
-        // Create a "fork" of the factory for this specific test instance.
-        // This allows us to inject test-specific services without affecting other tests sharing the fixture.
-        _testSpecificFactory = factory.WithWebHostBuilder(builder =>
-        {
-            builder.ConfigureTestServices(services =>
-            {
-                ConfigureServices(services);
-            });
-        });
-
-        // Initialize Client and Scope using the FORKED factory
-        Client = _testSpecificFactory.CreateClient();
-        Scope = _testSpecificFactory.Services.CreateScope();
+        Fixture = fixture;
+        Client = fixture.CreateClient();
+        _scope = fixture.Services.CreateScope();
     }
 
-    protected virtual void ConfigureServices(IServiceCollection services)
-    {
-    }
+    protected IServiceScope CreateScope() => Fixture.Services.CreateScope();
 
     public virtual ValueTask InitializeAsync()
     {
         return ValueTask.CompletedTask;
     }
 
-    public virtual async ValueTask DisposeAsync()
+    public virtual ValueTask DisposeAsync()
     {
-        // Clean up the scope at the end of the test
-        Scope.Dispose();
-        await _testSpecificFactory.DisposeAsync();
+        _scope.Dispose();
         GC.SuppressFinalize(this);
+        return ValueTask.CompletedTask;
     }
 }

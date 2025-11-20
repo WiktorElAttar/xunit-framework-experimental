@@ -4,13 +4,37 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SampleApp.Domain;
+using SampleApp.Infrastructure;
 using SampleApp.Services;
 using Xunit;
 
 namespace SampleApp.Tests;
 
-public class UserTests(SampleAppFactory factory) : SampleAppTestBase(factory)
+public class UserTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
 {
+    [Fact]
+    public async Task GetUsers_ReturnsManuallyAddedUsers()
+    {
+        // Arrange
+        var dbContext = Services.GetRequiredService<AppDbContext>();
+        dbContext.Users.Add(new User { Name = "Tonny Donny", Email = "tonny@example.com"});
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var response = await Client.GetAsync("/users");
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var users = await response.Content.ReadFromJsonAsync<List<User>>();
+
+        Assert.NotNull(users);
+        Assert.NotEmpty(users);
+        Assert.Contains(users, u => u.Name == "Alice Smith");
+        Assert.Contains(users, u => u.Name == "Bob Jones");
+        Assert.Contains(users, u => u.Name == "Charlie Day");
+        Assert.Contains(users, u => u.Name == "Tonny Donny");
+    }
+
     [Fact]
     public async Task GetUsers_ReturnsSeededData()
     {
@@ -25,6 +49,7 @@ public class UserTests(SampleAppFactory factory) : SampleAppTestBase(factory)
         Assert.NotEmpty(users);
         Assert.Contains(users, u => u.Name == "Alice Smith");
         Assert.Contains(users, u => u.Name == "Bob Jones");
+        Assert.Contains(users, u => u.Name == "Charlie Day");
     }
 
     [Fact]
