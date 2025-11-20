@@ -8,7 +8,7 @@ using SampleApp.Infrastructure;
 using SampleApp.Services;
 using Xunit;
 
-namespace SampleApp.Tests;
+namespace SampleAppProject;
 
 public class UserTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
 {

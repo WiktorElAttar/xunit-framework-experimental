@@ -1,7 +1,7 @@
 using Xunit;
 using XUnitFramework.Project;
 
-namespace SampleApp.Tests;
+namespace SampleAppProject;
 
 [Collection("SampleApp Collection")]
 public abstract class SampleAppTestBase(SampleAppFixture fixture)

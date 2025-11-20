@@ -5,7 +5,7 @@ using SampleApp.Infrastructure;
 using Testcontainers.PostgreSql;
 using XUnitFramework.Project;
 
-namespace SampleApp.Tests;
+namespace SampleAppProject;
 
 public class SampleAppFixture : IntegrationTestFixture<Program>
 {

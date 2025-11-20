@@ -5,7 +5,7 @@ using SampleApp.Domain;
 using SampleApp.Infrastructure;
 using Xunit;
 
-namespace SampleApp.Tests;
+namespace SampleAppProject;
 
 public class OtherTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
 {

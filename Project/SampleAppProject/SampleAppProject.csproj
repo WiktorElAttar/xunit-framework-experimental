@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <RootNamespace>SampleApp.Tests</RootNamespace>
         <!--
         This template uses native xUnit.net command line options when using 'dotnet run' and
         VSTest by default when using 'dotnet test'. For more information on how to enable support
@@ -23,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SampleApp\SampleApp.csproj" />
+      <ProjectReference Include="..\..\SampleApp\SampleApp.csproj" />
       <ProjectReference Include="..\XUnitFramework.Project\XUnitFramework.Project.csproj" />
     </ItemGroup>
 
