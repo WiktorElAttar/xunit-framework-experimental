@@ -14,7 +14,7 @@ public class OtherTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
     {
         // Arrange
         var dbContext = Services.GetRequiredService<AppDbContext>();
-        dbContext.Users.Add(new User { Name = "Danny Duck", Email = "danny@example.com"});
+        dbContext.Users.Add(new User { Name = "Tom Dom", Email = "tom@example.com"});
         await dbContext.SaveChangesAsync();
 
         // Assert
@@ -25,7 +25,7 @@ public class OtherTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
         Assert.Contains(users, u => u.Name == "Alice Smith");
         Assert.Contains(users, u => u.Name == "Bob Jones");
         Assert.Contains(users, u => u.Name == "Charlie Day");
-        Assert.Contains(users, u => u.Name == "Danny Duck");
+        Assert.Contains(users, u => u.Name == "Tom Dom");
     }
 
     [Fact]
