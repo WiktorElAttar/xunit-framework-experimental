@@ -1,13 +1,12 @@
-using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SampleApp.Domain;
 using SampleApp.Infrastructure;
 using Xunit;
 
-namespace SampleAppProject;
+namespace SampleAppExtension;
 
-public class OtherTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
+public class OtherTests: SampleAppTestBase
 {
     [Fact]
     public async Task AddUsers()

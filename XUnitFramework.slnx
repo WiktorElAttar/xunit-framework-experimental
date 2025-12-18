@@ -1,4 +1,8 @@
 ﻿<Solution>
+  <Folder Name="/Extension/">
+    <Project Path="Extension/SampleAppExtension/SampleAppExtension.csproj" />
+    <Project Path="Extension/XUnitFramework.Extension/XUnitFramework.Extension.csproj" />
+  </Folder>
   <Folder Name="/Project/">
     <Project Path="Project/XUnitFramework.Project/XUnitFramework.Project.csproj" />
     <Project Path="Project\SampleAppProject\SampleAppProject.csproj" />
