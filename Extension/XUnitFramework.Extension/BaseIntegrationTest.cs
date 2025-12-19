@@ -23,7 +23,7 @@ public abstract class BaseIntegrationTest<TProgram, TFixture> : IAsyncLifetime
     public virtual async ValueTask InitializeAsync()
     {
         Fixture = await TestContext.Current.GetFixture<TFixture>()
-            ?? throw new InvalidOperationException($"Fixture of type {typeof(TFixture).Name} was not found in the test context.");
+            ?? throw new InvalidOperationException($"Fixture of type {nameof(TFixture)} was not found in the test context.");
         Client = Fixture.CreateClient();
         _scope = Fixture.Services.CreateScope();
     }
