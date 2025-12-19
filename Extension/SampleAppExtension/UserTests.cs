@@ -15,10 +15,10 @@ public class UserTests : SampleAppTestBase
         // Arrange
         var dbContext = Services.GetRequiredService<AppDbContext>();
         dbContext.Users.Add(new User { Name = "Tonny Donny", Email = "tonny@example.com"});
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(CancellationToken);
 
         // Act
-        var response = await Client.GetAsync("/users");
+        var response = await Client.GetAsync("/users", CancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
