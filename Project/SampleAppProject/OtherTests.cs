@@ -15,10 +15,10 @@ public class OtherTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
         // Arrange
         var dbContext = Services.GetRequiredService<AppDbContext>();
         dbContext.Users.Add(new User { Name = "Tom Dom", Email = "tom@example.com"});
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(CancellationToken);
 
         // Assert
-        var users = await dbContext.Users.ToListAsync();
+        var users = await dbContext.Users.ToListAsync(CancellationToken);
 
         Assert.NotNull(users);
         Assert.NotEmpty(users);
@@ -35,13 +35,13 @@ public class OtherTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
         var dbContext = Services.GetRequiredService<AppDbContext>();
         var userToAdd = new User { Name = "Danny Duck", Email = "danny@example.com"};
         dbContext.Users.Add(userToAdd);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(CancellationToken);
 
         // Act
-        await Client.PutAsync($"/users/{userToAdd.Id}?name={"Danny Duck 2"}&email={userToAdd.Email}", null);
+        await Client.PutAsync($"/users/{userToAdd.Id}?name=Danny Duck 2&email={userToAdd.Email}", null, CancellationToken);
 
         // Assert
-        var users = await dbContext.Users.ToListAsync();
+        var users = await dbContext.Users.ToListAsync(CancellationToken);
         Assert.NotNull(users);
         Assert.NotEmpty(users);
         Assert.Contains(users, u => u.Name == "Danny Duck");
@@ -49,14 +49,14 @@ public class OtherTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
         using (var scope = Services.CreateScope())
         {
             var anotherDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            var user = await anotherDbContext.Users.SingleOrDefaultAsync(u => u.Name == "Danny Duck");
+            var user = await anotherDbContext.Users.SingleOrDefaultAsync(u => u.Name == "Danny Duck", CancellationToken);
             Assert.Null(user);
         }
 
         using (var scope = Services.CreateScope())
         {
             var anotherDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            var user = await anotherDbContext.Users.SingleOrDefaultAsync(u => u.Name == "Danny Duck 2");
+            var user = await anotherDbContext.Users.SingleOrDefaultAsync(u => u.Name == "Danny Duck 2", CancellationToken);
             Assert.NotNull(user);
         }
     }

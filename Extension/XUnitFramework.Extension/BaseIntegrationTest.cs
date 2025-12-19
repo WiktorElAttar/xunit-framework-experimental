@@ -12,6 +12,7 @@ public abstract class BaseIntegrationTest<TProgram, TFixture> : IAsyncLifetime
     protected TFixture Fixture { get; private set; } = null!;
     protected HttpClient Client { get; private set; } = null!;
     protected IServiceProvider Services => _scope.ServiceProvider;
+    protected CancellationToken CancellationToken => TestContext.Current.CancellationToken;
 
     protected BaseIntegrationTest()
     {

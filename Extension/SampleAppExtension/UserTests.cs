@@ -22,7 +22,7 @@ public class UserTests : SampleAppTestBase
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var users = await response.Content.ReadFromJsonAsync<List<User>>();
+        var users = await response.Content.ReadFromJsonAsync<List<User>>(CancellationToken);
 
         Assert.NotNull(users);
         Assert.NotEmpty(users);
@@ -36,11 +36,11 @@ public class UserTests : SampleAppTestBase
     public async Task GetUsers_ReturnsSeededData()
     {
         // Act
-        var response = await Client.GetAsync("/users");
+        var response = await Client.GetAsync("/users", CancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var users = await response.Content.ReadFromJsonAsync<List<User>>();
+        var users = await response.Content.ReadFromJsonAsync<List<User>>(CancellationToken);
 
         Assert.NotNull(users);
         Assert.NotEmpty(users);
@@ -62,11 +62,11 @@ public class UserTests : SampleAppTestBase
 
         // Act
         // Using PostAsync with query string since the endpoint binds to query parameters
-        var response = await Client.PostAsync($"/users{queryString}", null);
+        var response = await Client.PostAsync($"/users{queryString}", null, CancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var createdUser = await response.Content.ReadFromJsonAsync<User>();
+        var createdUser = await response.Content.ReadFromJsonAsync<User>(CancellationToken);
 
         Assert.NotNull(createdUser);
         Assert.Equal("New User", createdUser.Name);
@@ -74,7 +74,7 @@ public class UserTests : SampleAppTestBase
         Assert.True(createdUser.Id > 0);
 
         // Verify via Get
-        var getAllResponse = await Client.GetFromJsonAsync<List<User>>("/users");
+        var getAllResponse = await Client.GetFromJsonAsync<List<User>>("/users", CancellationToken);
         Assert.NotNull(getAllResponse);
         Assert.Contains(getAllResponse, u => u.Email == "newuser@example.com");
     }
