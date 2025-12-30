@@ -12,7 +12,9 @@ public class OtherTests: SampleAppTestBase
     public async Task AddUsers()
     {
         // Arrange
-        var dbContext = Services.GetRequiredService<AppDbContext>();
+        using var scope = RootServiceProvider.CreateScope();
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         dbContext.Users.Add(new User { Name = "Tom Dom", Email = "tom@example.com"});
         await dbContext.SaveChangesAsync(CancellationToken);
 
@@ -31,7 +33,9 @@ public class OtherTests: SampleAppTestBase
     public async Task UsingDbContextFromScope_WillReturnCachedData()
     {
         // Arrange
-        var dbContext = Services.GetRequiredService<AppDbContext>();
+        using var rootScope = RootServiceProvider.CreateScope();
+
+        var dbContext = rootScope.ServiceProvider.GetRequiredService<AppDbContext>();
         var userToAdd = new User { Name = "Danny Duck", Email = "danny@example.com"};
         dbContext.Users.Add(userToAdd);
         await dbContext.SaveChangesAsync(CancellationToken);
@@ -45,14 +49,14 @@ public class OtherTests: SampleAppTestBase
         Assert.NotEmpty(users);
         Assert.Contains(users, u => u.Name == "Danny Duck");
 
-        using (var scope = Services.CreateScope())
+        using (var scope = CreateServiceScope())
         {
             var anotherDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var user = await anotherDbContext.Users.SingleOrDefaultAsync(u => u.Name == "Danny Duck", CancellationToken);
             Assert.Null(user);
         }
 
-        using (var scope = Services.CreateScope())
+        using (var scope = CreateServiceScope())
         {
             var anotherDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var user = await anotherDbContext.Users.SingleOrDefaultAsync(u => u.Name == "Danny Duck 2", CancellationToken);

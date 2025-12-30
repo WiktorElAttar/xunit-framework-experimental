@@ -7,30 +7,25 @@ public abstract class BaseIntegrationTest<TProgram, TFixture> : IAsyncLifetime
     where TProgram : class
     where TFixture : IntegrationTestFixture<TProgram>
 {
-    private IServiceScope _scope = null!;
+    private TFixture Fixture { get; set; } = null!;
 
-    protected TFixture Fixture { get; private set; } = null!;
     protected HttpClient Client { get; private set; } = null!;
-    protected IServiceProvider Services => _scope.ServiceProvider;
+    protected IServiceProvider RootServiceProvider => Fixture.Services;
     protected CancellationToken CancellationToken => TestContext.Current.CancellationToken;
 
-    protected BaseIntegrationTest()
-    {
-    }
+    protected BaseIntegrationTest() { }
 
-    protected IServiceScope CreateScope() => Fixture.Services.CreateScope();
+    protected IServiceScope CreateServiceScope() => Fixture.Services.CreateScope();
 
     public virtual async ValueTask InitializeAsync()
     {
         Fixture = await TestContext.Current.GetFixture<TFixture>()
             ?? throw new InvalidOperationException($"Fixture of type {nameof(TFixture)} was not found in the test context.");
         Client = Fixture.CreateClient();
-        _scope = Fixture.Services.CreateScope();
     }
 
     public virtual ValueTask DisposeAsync()
     {
-        _scope?.Dispose();
         GC.SuppressFinalize(this);
         return ValueTask.CompletedTask;
     }

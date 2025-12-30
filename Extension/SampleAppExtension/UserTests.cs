@@ -13,7 +13,9 @@ public class UserTests : SampleAppTestBase
     public async Task GetUsers_ReturnsManuallyAddedUsers()
     {
         // Arrange
-        var dbContext = Services.GetRequiredService<AppDbContext>();
+        using var scope = RootServiceProvider.CreateScope();
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         dbContext.Users.Add(new User { Name = "Tonny Donny", Email = "tonny@example.com"});
         await dbContext.SaveChangesAsync(CancellationToken);
 
