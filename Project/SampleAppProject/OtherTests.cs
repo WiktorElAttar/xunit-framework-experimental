@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SampleApp.Domain;
@@ -38,7 +37,8 @@ public class OtherTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
         await dbContext.SaveChangesAsync(CancellationToken);
 
         // Act
-        await Client.PutAsync($"/users/{userToAdd.Id}?name=Danny Duck 2&email={userToAdd.Email}", null, CancellationToken);
+        var url = new Uri($"/users/{userToAdd.Id}?name=Danny Duck 2&email={userToAdd.Email}", UriKind.Relative);
+        await Client.PutAsync(url, null, CancellationToken);
 
         // Assert
         var users = await dbContext.Users.ToListAsync(CancellationToken);

@@ -1,11 +1,8 @@
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using SampleApp.Domain;
 using SampleApp.Infrastructure;
-using SampleApp.Services;
 using Xunit;
 
 namespace SampleAppProject;
@@ -21,7 +18,8 @@ public class UserTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
         await dbContext.SaveChangesAsync(CancellationToken);
 
         // Act
-        var response = await Client.GetAsync("/users", CancellationToken);
+        var url = new Uri("/users", UriKind.Relative);
+        var response = await Client.GetAsync(url, CancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -39,7 +37,8 @@ public class UserTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
     public async Task GetUsers_ReturnsSeededData()
     {
         // Act
-        var response = await Client.GetAsync("/users", CancellationToken);
+        var url = new Uri("/users", UriKind.Relative);
+        var response = await Client.GetAsync(url, CancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -64,8 +63,8 @@ public class UserTests(SampleAppFixture fixture) : SampleAppTestBase(fixture)
         var queryString = QueryString.Create(newUserQuery);
 
         // Act
-        // Using PostAsync with query string since the endpoint binds to query parameters
-        var response = await Client.PostAsync($"/users{queryString}", null, CancellationToken);
+        var url = new Uri($"/users{queryString}", UriKind.Relative);
+        var response = await Client.PostAsync(url, null, CancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
