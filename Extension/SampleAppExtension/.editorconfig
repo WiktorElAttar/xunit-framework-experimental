@@ -1,0 +1,4 @@
+# Remove the line below if you want to inherit .editorconfig settings from higher directories
+
+[*.cs]
+dotnet_diagnostic.CA1707.severity = none # Identifiers should not contain underscores ## Externally
