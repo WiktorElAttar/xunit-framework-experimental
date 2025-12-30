@@ -13,8 +13,6 @@ public abstract class IntegrationTestBase<TProgram, TFixture> : IAsyncLifetime
     protected IServiceProvider RootServiceProvider => Fixture.Services;
     protected CancellationToken CancellationToken => TestContext.Current.CancellationToken;
 
-    protected IntegrationTestBase() { }
-
     protected IServiceScope CreateServiceScope() => Fixture.Services.CreateScope();
 
     public virtual async ValueTask InitializeAsync()
