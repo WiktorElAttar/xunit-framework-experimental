@@ -6,8 +6,6 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
-      <PackageReference Include="Testcontainers" />
-      <PackageReference Include="Testcontainers.PostgreSql" />
       <PackageReference Include="xunit.analyzers">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
