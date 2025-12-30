@@ -6,7 +6,7 @@ using Xunit;
 
 namespace XUnitFramework.Extension;
 
-public abstract class IntegrationTestFixture<TProgram> : WebApplicationFactory<TProgram>, IAsyncLifetime
+public abstract class IntegrationTestFixtureBase<TProgram> : WebApplicationFactory<TProgram>, IAsyncLifetime
     where TProgram : class
 {
     public virtual ValueTask InitializeAsync()

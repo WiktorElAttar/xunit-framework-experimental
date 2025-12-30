@@ -6,7 +6,7 @@ using Xunit;
 
 namespace SampleAppExtension;
 
-public class OtherTests: SampleAppTestBase
+public class OtherTestsIntegrationTest: SampleAppTestIntegrationTestBase
 {
     [Fact]
     public async Task AddUsers()

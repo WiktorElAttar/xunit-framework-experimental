@@ -3,9 +3,9 @@ using Xunit;
 
 namespace XUnitFramework.Extension;
 
-public abstract class BaseIntegrationTest<TProgram, TFixture> : IAsyncLifetime
+public abstract class IntegrationTestBase<TProgram, TFixture> : IAsyncLifetime
     where TProgram : class
-    where TFixture : IntegrationTestFixture<TProgram>
+    where TFixture : IntegrationTestFixtureBase<TProgram>
 {
     private TFixture Fixture { get; set; } = null!;
 
@@ -13,7 +13,7 @@ public abstract class BaseIntegrationTest<TProgram, TFixture> : IAsyncLifetime
     protected IServiceProvider RootServiceProvider => Fixture.Services;
     protected CancellationToken CancellationToken => TestContext.Current.CancellationToken;
 
-    protected BaseIntegrationTest() { }
+    protected IntegrationTestBase() { }
 
     protected IServiceScope CreateServiceScope() => Fixture.Services.CreateScope();
 

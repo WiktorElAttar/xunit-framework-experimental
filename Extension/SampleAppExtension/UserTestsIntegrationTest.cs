@@ -7,7 +7,7 @@ using Xunit;
 
 namespace SampleAppExtension;
 
-public class UserTests : SampleAppTestBase
+public class UserTestsIntegrationTest : SampleAppTestIntegrationTestBase
 {
     [Fact]
     public async Task GetUsers_ReturnsManuallyAddedUsers()
