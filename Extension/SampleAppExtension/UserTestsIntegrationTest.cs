@@ -20,7 +20,8 @@ public class UserTestsIntegrationTest : SampleAppTestIntegrationTestBase
         await dbContext.SaveChangesAsync(CancellationToken);
 
         // Act
-        var response = await Client.GetAsync("/users", CancellationToken);
+        var url = new Uri( "/users", UriKind.Relative);
+        var response = await Client.GetAsync(url, CancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -38,7 +39,8 @@ public class UserTestsIntegrationTest : SampleAppTestIntegrationTestBase
     public async Task GetUsers_ReturnsSeededData()
     {
         // Act
-        var response = await Client.GetAsync("/users", CancellationToken);
+        var url = new Uri( "/users", UriKind.Relative);
+        var response = await Client.GetAsync(url, CancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -63,8 +65,8 @@ public class UserTestsIntegrationTest : SampleAppTestIntegrationTestBase
         var queryString = QueryString.Create(newUserQuery);
 
         // Act
-        // Using PostAsync with query string since the endpoint binds to query parameters
-        var response = await Client.PostAsync($"/users{queryString}", null, CancellationToken);
+        var url = new Uri($"/users{queryString}", UriKind.Relative);
+        var response = await Client.PostAsync(url, null, CancellationToken);
 
         // Assert
         response.EnsureSuccessStatusCode();
